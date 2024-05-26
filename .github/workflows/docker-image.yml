@@ -28,4 +28,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/lukasmetzner/podprox:${{ env.GITHUB_REF_NAME }}
+          tags: ghcr.io/lukasmetzner/podprox:${GITHUB_REF_NAME}

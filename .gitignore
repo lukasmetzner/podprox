@@ -1,0 +1,6 @@
+bin/
+*.so
+*.dylib
+*.test
+go.work
+go.work.sum

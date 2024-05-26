@@ -1,0 +1,91 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: podprox-deployment
+  labels:
+    app: podprox
+spec:
+  replicas: 1 
+  selector:
+    matchLabels:
+      app: podprox
+  template:
+    metadata:
+      labels:
+        app: podprox
+    spec:
+      serviceAccountName: podprox-sa
+      containers:
+      - name: podprox
+        image: podprox
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 3000
+        volumeMounts:
+        - name: remote-manifest
+          mountPath: /etc/config/
+      volumes:
+        - name: remote-manifest
+          configMap:
+            name: remote-manifest
+            items:
+            - key: remote.yaml
+              path: remote.yaml
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: podprox-service
+spec:
+  selector:
+    app: podprox
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+  type: NodePort
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: podprox-sa
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: podprox-role
+rules:
+- apiGroups: [""]
+  resources: ["*"]
+  verbs: ["*"]
+- apiGroups: ["apps"]
+  resources: ["*"]
+  verbs: ["*"]
+- apiGroups: ["batch"]
+  resources: ["*"]
+  verbs: ["*"]
+- apiGroups: ["extensions"]
+  resources: ["*"]
+  verbs: ["*"]
+- apiGroups: ["policy"]
+  resources: ["*"]
+  verbs: ["*"]
+- apiGroups: ["rbac.authorization.k8s.io"]
+  resources: ["*"]
+  verbs: ["*"]
+- apiGroups: ["autoscaling"]
+  resources: ["*"]
+  verbs: ["*"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: podprox-rolebinding
+subjects:
+- kind: ServiceAccount
+  name: podprox-sa
+roleRef:
+  kind: Role
+  name: podprox-role
+  apiGroup: rbac.authorization.k8s.io

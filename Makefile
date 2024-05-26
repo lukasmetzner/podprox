@@ -15,13 +15,7 @@ build: $(GO_FILES)
 	@go build -o $(BIN_FILE) $(MAIN_FILE)
 	@echo "Build complete. Binary is located at $(BIN_FILE)."
 
-linux: $(GO_FILES)
-	@echo "Building $(APP_NAME) on linux"
-	@mkdir -p $(BIN_DIR)
-	@GOOS=linux go build -o $(BIN_FILE) $(MAIN_FILE)
-	@echo "Build complete. Binary is located at $(BIN_FILE)."
-
-image: linux
+image: $(GO_FILES) 
 	@echo "Building Docker Image"
 	@docker build -t podprox .
 

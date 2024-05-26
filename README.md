@@ -3,6 +3,7 @@
 **Create a new Kubernetes pod for every new TCP connection and proxy the traffic**
 
 ## Example Usage
+Currently the pod manifest can only contain a single container with a single open port.
 ``` bash
 # Store remote pod configuration in configmap
 kubectl create configmap remote-manifest --from-file=examples/remote.yaml

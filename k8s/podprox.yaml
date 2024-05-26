@@ -18,7 +18,7 @@ spec:
       serviceAccountName: podprox-sa
       containers:
       - name: podprox
-        image: podprox
+        image: ghcr.io/lukasmetzner/podprox:latest
         imagePullPolicy: Never
         ports:
         - containerPort: 3000

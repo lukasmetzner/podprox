@@ -23,9 +23,15 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Extract branch name
+        id: extract_branch
+        run: echo "BRANCH_NAME=${GITHUB_REF_NAME}" >> $GITHUB_ENV
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v5.3.0
         with:
           context: .
           push: true
-          tags: ghcr.io/lukasmetzner/podprox:${GITHUB_REF_NAME}
+          tags: |
+            ghcr.io/lukasmetzner/podprox:latest
+            ghcr.io/lukasmetzner/podprox:${{ env.BRANCH_NAME }}

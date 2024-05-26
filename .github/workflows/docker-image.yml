@@ -28,4 +28,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/lukasmetzner/podprox/podprox:latest
+          tags: ghcr.io/lukasmetzner/podprox:latest
